@@ -2,6 +2,7 @@
 package main
 
 import (
+	"fmt"
 	"context"
 	"log"
 	"net"
@@ -10,7 +11,8 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/shijuvar/go-distributed-sys/pb"
-	"github.com/shijuvar/go-distributed-sys/store"
+	// "github.com/shijuvar/go-distributed-sys/store"
+	"../store"
 	"github.com/shijuvar/go-distributed-sys/natsutil"
 )
 
@@ -57,10 +59,12 @@ func publishEvent(component *natsutil.StreamingComponent, event *pb.Event) {
 }
 
 func main() {
+	fmt.Println("Entering main")
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+	log.Println("listening is done")
 	// Register new component within the NATS system.
 	comp := natsutil.NewStreamingComponent(clientID)
 
@@ -70,8 +74,9 @@ func main() {
 		stan.NatsURL(stan.DefaultNatsURL),
 	)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Failed to connect to NATs", err)
 	}
+	log.Println("Finish connecting to NATs")
 	// Creates a new gRPC server
 	s := grpc.NewServer()
 	pb.RegisterEventStoreServer(s, &server { StreamingComponent: comp})

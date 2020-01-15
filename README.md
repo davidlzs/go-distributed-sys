@@ -5,61 +5,55 @@ Check out the article [Building Microservices with Event Sourcing/CQRS in Go usi
 * Go
 * NATS Streaming
 * gRPC
-* CockroachDB
+* ~~CockroachDB~~ Postgres
 
 
-## Compile Proto files
+## Start nats-streaming
 Run the command below from the nats-streaming directory:
 
-protoc -I pb/ pb/*.proto --go_out=plugins=grpc:pb
+`nats-streaming-server.exe --store file --dir ./data --max_msgs 0 --max_bytes 0`
 
-## Set up CockroachDB
+## Start Postgres in Docker
 
-#### Create user
-cockroach user set shijuvar --insecure
+### Create posgres-network
+`docker network create postgres-network`
 
-#### Create Database
-cockroach sql --insecure -e 'CREATE DATABASE ordersdb'
+### Start the Postgres server in Docker
+`docker run -p 26257:5432 --name some-postgres --network postgres-network -e POSTGRES_USER=shijuvar -e POSTGRES_DB=ordersdb -d postgres`
 
-#### Grant privileges to the shijuvar user
-cockroach sql --insecure -e 'GRANT ALL ON DATABASE ordersdb TO shijuvar'
+### Connect Postgres client command line: psql
+`docker exec -it some-postgres psql ordersdb shijuvar`
 
-### Start CockroachDB Cluster 
 
-#### Start node 1:
-cockroach start --insecure \
---store=ordersdb-1 \
---host=localhost \
---background
+## Start OrderService
 
-#### Start node 2:
-cockroach start --insecure \
---store=ordersdb-2 \
---host=localhost \
---port=26258 \
---http-port=8081 \
---join=localhost:26257 \
---background
+### cd to the orderservice folder
 
-#### Start node 3:
-cockroach start --insecure \
---store=ordersdb-3 \
---host=localhost \
---port=26259 \
---http-port=8082 \
---join=localhost:26257 \
---background
+`go get -v`
 
-#### Start a SQL Shell for CockroachDB:
-cockroach sql \
---url="postgresql://shijuvar@localhost:26257/ordersdb?sslmode=disable";
+`go build`
 
-## Run NATS Streaming Server
-nats-streaming-server \
---store file \
---dir ./data \
---max_msgs 0 \
---max_bytes 0
+`go run main.go`
+
+## Start EventStore
+
+### cd to eventstore folder
+
+`go get -v`
+
+`go build`
+
+`go run main.go`
+
+## Use Postman to send a OrderCreateCommand
+
+### POST url: http://localhost:3000/api/orders
+
+### Body like:
+
+`{"customer_id" : "Google"}`
+
+## Check the events table in Postgres
 
 ## Basic Workflow in the example:
 1. A client app post an Order to an HTTP API.

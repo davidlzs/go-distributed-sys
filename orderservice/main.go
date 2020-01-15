@@ -9,7 +9,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 	"google.golang.org/grpc"
 
 	"github.com/shijuvar/go-distributed-sys/pb"
@@ -45,7 +45,8 @@ func createOrder(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid Order Data", 500)
 		return
 	}
-	aggregateID := uuid.NewV4().String()
+	u, _ := uuid.NewV4()
+	aggregateID := u.String()
 	order.OrderId = aggregateID
 	order.Status = "Pending"
 	order.CreatedOn = time.Now().Unix()
@@ -72,8 +73,9 @@ func createOrderRPC(order pb.OrderCreateCommand) error {
 	client := pb.NewEventStoreClient(conn)
 	orderJSON, _ := json.Marshal(order)
 
+	u, _ := uuid.NewV4()
 	event := &pb.Event{
-		EventId:       uuid.NewV4().String(),
+		EventId:       u.String(),
 		EventType:     event,
 		AggregateId:   order.OrderId,
 		AggregateType: aggregate,
