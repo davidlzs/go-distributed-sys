@@ -7,7 +7,7 @@ import (
 	"github.com/cockroachdb/cockroach-go/crdb"
 	"github.com/pkg/errors"
 
-	"github.com/shijuvar/go-distributed-sys/pb"
+	"github.com/davidlzs/go-distributed-sys/pb"
 )
 
 // QueryStore syncs data model to be used for query operations

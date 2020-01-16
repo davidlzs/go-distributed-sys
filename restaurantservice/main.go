@@ -10,9 +10,9 @@ import (
 	"github.com/satori/go.uuid"
 	"google.golang.org/grpc"
 
-	"github.com/shijuvar/go-distributed-sys/pb"
-	"github.com/shijuvar/go-distributed-sys/natsutil"
-	"github.com/shijuvar/go-distributed-sys/store"
+	"github.com/davidlzs/go-distributed-sys/pb"
+	"github.com/davidlzs/go-distributed-sys/natsutil"
+	"github.com/davidlzs/go-distributed-sys/store"
 	"context"
 	"github.com/pkg/errors"
 )

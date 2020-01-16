@@ -10,10 +10,9 @@ import (
 	"github.com/nats-io/go-nats-streaming"
 	"google.golang.org/grpc"
 
-	"github.com/shijuvar/go-distributed-sys/pb"
-	// "github.com/shijuvar/go-distributed-sys/store"
-	"../store"
-	"github.com/shijuvar/go-distributed-sys/natsutil"
+	"github.com/davidlzs/go-distributed-sys/pb"
+	"github.com/davidlzs/go-distributed-sys/store"
+	"github.com/davidlzs/go-distributed-sys/natsutil"
 )
 
 const (

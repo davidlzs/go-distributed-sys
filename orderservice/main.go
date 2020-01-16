@@ -12,7 +12,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"google.golang.org/grpc"
 
-	"github.com/shijuvar/go-distributed-sys/pb"
+	"github.com/davidlzs/go-distributed-sys/pb"
 )
 
 const (
