@@ -15,11 +15,8 @@ Run the command below from the nats-streaming directory:
 
 ## Start Postgres in Docker
 
-### Create posgres-network
-`docker network create postgres-network`
-
 ### Start the Postgres server in Docker
-`docker run -p 26257:5432 --name some-postgres --network postgres-network -e POSTGRES_USER=shijuvar -e POSTGRES_DB=ordersdb -d postgres`
+`docker run -p 26257:5432 --name some-postgres -e POSTGRES_USER=shijuvar -e POSTGRES_DB=ordersdb -d postgres`
 
 ### Connect Postgres client command line: psql
 `docker exec -it some-postgres psql ordersdb shijuvar`
@@ -31,8 +28,6 @@ Run the command below from the nats-streaming directory:
 
 `go get -v`
 
-`go build`
-
 `go run main.go`
 
 ## Start EventStore
@@ -41,7 +36,37 @@ Run the command below from the nats-streaming directory:
 
 `go get -v`
 
-`go build`
+`go run main.go`
+
+## Start PaymentService
+
+### cd to paymentservice folder
+
+`go get -v`
+
+`go run main.go`
+
+## Start orderquery-store1
+
+### cd to orderquery-store1 folder
+
+`go get -v`
+
+`go run main.go`
+
+## Start orderquery-store2
+
+### cd to orderquery-store2 folder
+
+`go get -v`
+
+`go run main.go`
+
+## Start restaurantservice
+
+### cd to restaurantservice folder
+
+`go get -v`
 
 `go run main.go`
 
@@ -52,6 +77,10 @@ Run the command below from the nats-streaming directory:
 ### Body like:
 
 `{"customer_id" : "Google"}`
+
+## Use curl to send a OrderCreateCommand
+
+`curl -X POST -d '{"customer_id":"Google"}' http://localhost:3000/api/orders`
 
 ## Check the events table in Postgres
 

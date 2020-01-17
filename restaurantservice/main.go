@@ -86,8 +86,9 @@ func createOrderApprovedCommand(orderId string) error {
 	defer conn.Close()
 	client := pb.NewEventStoreClient(conn)
 
+	u, _ := uuid.NewV4()
 	event := &pb.Event{
-		EventId:       uuid.NewV4().String(),
+		EventId:       u.String(),
 		EventType:     event,
 		AggregateId:   orderId,
 		AggregateType: aggregate,

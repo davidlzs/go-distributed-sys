@@ -84,8 +84,9 @@ func createPaymentDebitedCommand(command pb.OrderPaymentDebitedCommand) error {
 	client := pb.NewEventStoreClient(conn)
 	paymentJSON, _ := json.Marshal(command)
 
+	u, _ := uuid.NewV4()
 	event := &pb.Event{
-		EventId:       uuid.NewV4().String(),
+		EventId:       u.String(),
 		EventType:     event,
 		AggregateId:   command.OrderId,
 		AggregateType: aggregate,
